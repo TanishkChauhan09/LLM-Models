@@ -177,7 +177,7 @@ async function main()
     // here i am using await to wait for the response from the AI before proceeding
     // this is important to ensure that the AI has processed the question before we ask for another one
 
-    // main(); // call main again to allow continuous conversation otherwise if I will not call, it will end after one question and again when I run this
+    main(); // call main again to allow continuous conversation otherwise if I will not call, it will end after one question and again when I run this
     // this will make the history clear, so I due to not having the context of the previous conversation this will not give me the accurate predict answer 
     // like if earlier i told him that Hi, I am Tanishk Chuahan, but if I will not call main again it will end the conversation and when I will run it again it will not
     // have the context of the previous conversation, so it will not give me the accurate answer,if I call main again it will not refest the history array 
