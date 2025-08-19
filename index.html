@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Chatbot Instructor</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        :root {
+            --primary-color: #5e17eb;
+            --secondary-color: #2b86ff;
+            --card-background: #ffffff;
+            --text-color: #2c3e50;
+            --light-text-color: #ffffff;
+            --placeholder-text-color: #90a4ae;
+            --shadow-color-light: rgba(43, 134, 255, 0.25);
+            --shadow-color-dark: rgba(94, 23, 235, 0.3);
+            
+            --input-panel-bg: linear-gradient(145deg, #f0eaff, #e6f0ff);
+            --output-header-bg: #e3e8f2;
+            --output-chat-area-bg: #d8e1f0; 
+            --answer-block-bg: #ffffff;
+        }
+
+        /* --- Base and Layout --- */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-container {
+            display: flex;
+            width: 100%;
+            max-width: 1100px;
+            height: 750px;
+            max-height: 90vh;
+            background-color: var(--card-background);
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- Input Panel (Left Side) --- */
+        .input-panel {
+            flex-basis: 38%;
+            background: var(--input-panel-bg);
+            padding: 40px 35px;
+            display: flex;
+            flex-direction: column; /* This is key for the layout */
+            border-right: 1px solid #d8e1f0;
+        }
+
+        .input-panel-header {
+            flex-shrink: 0; /* Prevents header from shrinking */
+        }
+
+        .input-panel-header h1 {
+            font-size: 2.2em;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .input-panel-header p {
+            font-size: 1em;
+            color: #5a6a7b;
+            margin-top: 8px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        /* === CORRECTED: This block now correctly fills the available space === */
+        .input-form {
+            flex-grow: 1; /* Makes this div take all available vertical space */
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-form label {
+            display: block;
+            font-size: 1.1em;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 12px;
+        }
+
+        /* === CORRECTED: The textarea now expands properly === */
+        #user-question {
+            flex-grow: 1; /* Makes the textarea fill the .input-form container */
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #dcdfe6;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            resize: none;
+            background-color: #ffffff;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        #user-question:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px var(--shadow-color-light);
+        }
+        
+        .button-group {
+            flex-shrink: 0; /* Prevents buttons from shrinking */
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px; /* Space between textarea and buttons */
+        }
+
+        .btn {
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #send-btn {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text-color);
+            box-shadow: 0 5px 15px var(--shadow-color-dark);
+        }
+
+        #send-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px var(--shadow-color-dark);
+        }
+
+        #clear-btn {
+            background-color: #ffffff;
+            color: #4a5568;
+            border: 1px solid #d8dee8;
+        }
+        
+        #clear-btn:hover {
+            background-color: #f7faff;
+        }
+
+        /* --- Output Panel (Right Side) --- */
+        .output-panel {
+            flex-basis: 62%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .output-header {
+            padding: 24px 35px;
+            font-weight: 600;
+            font-size: 1.3em;
+            color: var(--text-color);
+            flex-shrink: 0;
+            background-color: var(--output-header-bg);
+            border-bottom: 1px solid #c9d2e0;
+        }
+
+        #answer-display {
+            flex-grow: 1;
+            padding: 35px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            background-color: var(--output-chat-area-bg);
+        }
+        
+        #answer-display::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #answer-display::-webkit-scrollbar-thumb {
+            background-color: #b0bec5;
+            border-radius: 4px;
+        }
+
+        #answer-display .placeholder {
+            text-align: center;
+            color: var(--placeholder-text-color);
+            margin: auto;
+            font-size: 1.2em;
+        }
+        
+        .message-block {
+            padding: 16px 22px;
+            border-radius: 18px;
+            max-width: 90%;
+            line-height: 1.6;
+            animation: fadeIn 0.5s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-block {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text-color);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .answer-block {
+            background-color: var(--answer-block-bg);
+            color: var(--text-color);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="input-panel">
+            <div class="input-panel-header">
+                <h1>DSA Instructor</h1>
+                <p>Your AI tutor for Data Structures & Algorithms. Get clear, friendly explanations.</p>
+            </div>
+            
+            <div class="input-form">
+                <label for="user-question">Your Question</label>
+                <textarea id="user-question" placeholder="e.g., Explain Big O notation..."></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button id="send-btn" class="btn">Ask Question</button>
+                <button id="clear-btn" class="btn">Clear Chat</button>
+            </div>
+        </div>
+
+        <div class="output-panel">
+            <div class="output-header">Conversation</div>
+            <div id="answer-display">
+                <p class="placeholder">Your conversation will appear here...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sendBtn = document.getElementById('send-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const userQuestionInput = document.getElementById('user-question');
+        const answerDisplay = document.getElementById('answer-display');
+
+        sendBtn.addEventListener('click', handleSendMessage);
+        clearBtn.addEventListener('click', handleClearChat);
+        
+        userQuestionInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                handleSendMessage();
+            }
+        });
+
+        function handleSendMessage() {
+            const question = userQuestionInput.value.trim();
+            if (question === '') return;
+
+            if (answerDisplay.querySelector('.placeholder')) {
+                answerDisplay.innerHTML = '';
+            }
+
+            appendMessage(question, 'question-block');
+            userQuestionInput.value = '';
+
+            const thinkingMessage = appendMessage('Thinking...', 'answer-block');
+            
+            getBotResponse(question, thinkingMessage);
+        }
+        
+        function handleClearChat() {
+            answerDisplay.innerHTML = '<p class="placeholder">Your conversation will appear here...</p>';
+        }
+
+        function appendMessage(text, className) {
+            const messageBlock = document.createElement('div');
+            messageBlock.classList.add('message-block', className);
+            messageBlock.textContent = text;
+            answerDisplay.appendChild(messageBlock);
+            answerDisplay.scrollTop = answerDisplay.scrollHeight;
+            return messageBlock;
+        }
+
+        async function getBotResponse(question, thinkingMessageElement) {
+            const apiKey = 'my api key here from google ai studio get api key'; // IMPORTANT: Replace with your actual Gemini API key
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+
+            const headers = { 'Content-Type': 'application/json' };
+
+            const body = JSON.stringify({
+                "contents": [{"parts": [{"text": question}]}],
+                "system_instruction": {
+                    "parts": [{
+                        "text": `you are a Data Structure and Algorithm instructor, if anyone came to ask you something only about Data Structure and Algorithm, 
+                        you will answer them politely and in a beginner friendly way, and if someone ask anything you reply very rudely that ask question only related
+                         to Data Structure and Algorithm not any other topic and reply them rudely also give the answer in a well formated manner which should be a systematic and easylisy understandable
+                         also You are a helpful, professional AI assistant that always provides well-structured, clearly formatted answers. Your response style follows these rules:
+
+                        1. Start with a brief ✅ summary or direct answer.
+                        2. Follow up with clear 🔧 step-by-step instructions or explanation.
+                        3. Use visual formatting such as:
+                        - Emojis to indicate sections (✅, 🔧, ⚠️, 💡)
+                        - Bold for emphasis
+                        - Numbered steps for sequences
+                        - Code blocks for commands, file paths, and code
+                        4. Add helpful extras like tips (💡) or warnings (⚠️) when relevant.
+                        5. Use simple, friendly, and professional language.
+                        6. Only add links if they are directly helpful to the solution.
+                        7. Never assume the user's skill level — explain clearly, but concisely.
+
+                        Always aim to make your answer easy to read, actionable, and user-friendly.
+                        You are a friendly, knowledgeable AI assistant who explains concepts in a clear, natural, and conversational tone — like a helpful expert. Avoid robotic or overly formatted templates. Instead:
+
+                        - Start with a concise summary in plain language.
+                        - Explain concepts through paragraphs, not bullets, unless steps genuinely need to be listed.
+                        - Use examples naturally within explanations.
+                        - Minimize the use of emojis or rigid markdown formatting.
+                        - Only use code blocks for actual code, not for highlighting ideas.
+                        - Your tone is professional yet approachable, and explanations should feel human — like a smart tutor or colleague walking someone through a topic.
+
+
+                        `
+                    }]
+                }
+            });
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: headers,
+                    body: body
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                const botAnswer = data.candidates[0].content.parts[0].text;
+                
+                thinkingMessageElement.textContent = botAnswer;
+
+            } catch (error) {
+                console.error('Error fetching bot response:', error);
+                thinkingMessageElement.textContent = 'Sorry, an error occurred. Please check the console and ensure your API key is correct.';
+                thinkingMessageElement.style.backgroundColor = '#ffdddd';
+            }
+        }
+    </script>
+
+</body>
+</html>
+
