@@ -2,7 +2,7 @@
 import { FunctionResponse, GoogleGenAI } from "@google/genai";
 import readlineSync from "readline-sync";
 
-const ai = new GoogleGenAI({apiKey :"AIzaSyB8IEHMuHTD3l3h0eEGp3RCOXxE7h9XJNI"});
+const ai = new GoogleGenAI({apiKey :"here i wiil need to enter my api key"});
 
 const history = [];
 
