@@ -9,7 +9,7 @@ import fs from "fs/promises";
 
 const platform = os.platform();
 
-const ai = new GoogleGenAI({apiKey :"AIzaSyDLqkmWiFCxu7cGSJQNORfcn8KnkP_0bA4"});
+const ai = new GoogleGenAI({apiKey :"MY API KEY"});
 
 const asyncExecute = promisify(exec);
 
