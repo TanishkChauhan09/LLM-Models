@@ -119,5 +119,6 @@ async function main(){
 // so before converting into vector i will call the LLM Model for the generation of meaningful question 
 // and now, i will make the chunks and making vector of these chunks, and searching into the chunks
 
+// (ALWAYS REMEMBER TO THINK WITH A BROADER AND CURRENT USED APPROACHES(SOLUTIONS) IN THE INDUSTRY)
 
 main();
