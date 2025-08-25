@@ -11,7 +11,7 @@ const ai = new GoogleGenAI({}); // here i don't need to enter my apikey:"asDaSJD
 const History = []
 
 
-// another LLM that will convert the  (previous questions+current question) to make a new meaningful question
+// another LLM that will convert the  (previous questions+current question) to make a new meaningful question SO
 async function transformQuery(question){
 
 History.push({
