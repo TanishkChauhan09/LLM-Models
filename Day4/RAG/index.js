@@ -41,7 +41,7 @@ async function indexDocument(){
 
     // langchain provides a very easy way to store the vectors in the pinecone database using pinecone store class
    
-    // langchain (chunking,embedding,database) using this step it does everything in one step
+    // langchain (chunking,embedding model of Gemini,database) using this step it does everything in one step
 
     //  now we will insert the vectors into pinecone database store
     await PineconeStore.fromDocuments(chunkedDocs, embeddings, {
